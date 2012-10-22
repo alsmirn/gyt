@@ -38,10 +38,14 @@ class Gyt(cmd.Cmd):
         return True
 
 
-if __name__ == '__main__':
+def main():
 
     try:
         Gyt().cmdloop()
     except KeyboardInterrupt:
         print('^C')
         exit(0)
+
+
+if __name__ == '__main__':
+    main()
