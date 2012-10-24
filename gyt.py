@@ -23,7 +23,7 @@ class Gyt(cmd.Cmd):
 
     def do_git(self, cmd):
         cmd = ['git', ] + cmd.split()
-        call(cmd, stdout=True)
+        call(cmd)
 
     def get_names(self):
         return get_git_commands()
@@ -36,7 +36,7 @@ class Gyt(cmd.Cmd):
 
     def do_EOF(self, line):
         print('^D')
-        
+
         return True
 
 
