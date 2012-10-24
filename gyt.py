@@ -29,12 +29,14 @@ class Gyt(cmd.Cmd):
         return get_git_commands()
 
     def precmd(self, line):
-        return "git %s" % line
+        return "git %s" % (line,) if line is not "EOF" else line
 
     def completenames(self, text, *ignored):
         return [a for a in self.get_names() if a.startswith(text)]
 
     def do_EOF(self, line):
+        print('^D')
+        
         return True
 
 
