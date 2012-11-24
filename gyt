@@ -4,6 +4,26 @@ import cmd
 from subprocess import call, check_output
 
 
+VERSION = "1.0"
+INTRO = \
+"""%(git_version)s
+
+Gyt %(gyt_version)s -- An enhanced Git console through Python.
+help      -> Git's own help system.
+?command   -> Details about Git 'command', can be used as 'command?'.
+"""
+
+def get_git_version():
+    """Get git version or exit with error."""
+
+    git_version = check_output(["git", "--version"])
+
+    if not git_version.startswith("git"):
+        print("Git is not installed in your system.")
+        exit(2)
+
+    return git_version.rstrip('\n')
+
 def get_git_commands():
     """Get git commands from 'git help' output."""
 
@@ -20,6 +40,8 @@ class Gyt(cmd.Cmd):
     """Simple overdrive ;)"""
 
     prompt = "git "
+    intro = INTRO % \
+            {"git_version": get_git_version(), "gyt_version": VERSION}
 
     def do_git(self, cmd):
         cmd = ['git', ] + cmd.split()
