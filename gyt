@@ -98,7 +98,7 @@ class Gyt(cmd.Cmd):
         if ln > len(line):
             line = "help %s" % (line,)
 
-        first_cmd = line.split()[0]
+        first_cmd = line.split()[0] if line else ""
         if first_cmd in GYT_COMMANDS:
             return line
         else:
