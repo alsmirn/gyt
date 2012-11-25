@@ -5,13 +5,53 @@ from subprocess import call, check_output
 
 
 VERSION = "1.0"
-INTRO = \
-"""%(git_version)s
+
+INTRO = """%(git_version)s
+Type "copyright", "credits" or "license" for more information.
 
 Gyt %(gyt_version)s -- An enhanced Git console through Python.
 help      -> Git's own help system.
-?command   -> Details about Git 'command', can be used as 'command?'.
+?command   -> Details about Git "command", can be used as "command?".
 """
+
+COPYRIGHT = """Copyright (c) 2012, Alexey Smirnov <alsmirn@gmail.com>
+All Rights Reserved. 
+"""
+
+CREDITS = """Thanks to Serge Matveenko lig@GitHub for idea 
+and TrashNRoll@GitHub for support.
+"""
+
+LICENSE = \
+"""Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+    * Neither the name of the author nor the names of other
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+"""
+
+GYT_COMMANDS = ("copyright", "credits", "license", "EOF")
+
 
 def get_git_version():
     """Get git version or exit with error."""
@@ -48,7 +88,8 @@ class Gyt(cmd.Cmd):
         call(cmd)
 
     def get_names(self):
-        return get_git_commands()
+        all_commands = list(GYT_COMMANDS) + get_git_commands()
+        return all_commands
 
     def precmd(self, line):
 
@@ -57,14 +98,26 @@ class Gyt(cmd.Cmd):
         if ln > len(line):
             line = "help %s" % (line,)
 
-        return "git %s" % (line,) if line is not "EOF" else line
+        first_cmd = line.split()[0]
+        if first_cmd in GYT_COMMANDS:
+            return line
+        else:
+            return "git %s" % (line,)
 
     def completenames(self, text, *ignored):
         return [a for a in self.get_names() if a.startswith(text)]
 
+    def do_copyright(self, line):
+        print(COPYRIGHT)
+
+    def do_credits(self, line):
+        print(CREDITS)
+
+    def do_license(self, line):
+        print(LICENSE)
+
     def do_EOF(self, line):
         print('^D')
-
         return True
 
 
