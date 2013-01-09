@@ -1,0 +1,10 @@
+Package: gyt
+Version: 1.0
+Section: shells
+Architecture: all
+Depends: python, git
+Maintainer: Alexey Smirnov <alsmirn@gmail.com>
+Homepage: http://www.github.com/alsmirn/gyt
+Vcs-Browser: https://github.com/alsmirn/gyt
+Vcs-Git: https://github.com/alsmirn/gyt.git
+Description: console over the Git. W/o printing of 'git'.
